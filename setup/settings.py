@@ -6,19 +6,12 @@ import sentry_sdk
 from dotenv import load_dotenv
 load_dotenv()
 
-sentry_sdk.init(
-    dsn=os.getenv('DJANGO_APP_SENTRY_DSN'),
-    send_default_pii=True,
-    environment='Development',
-    release=str(os.getenv('DJANGO_APP_NAME', 'Growup')) + ' - ' + str(os.getenv('DJANGO_APP_VERSION', 'v1.0')),
-    traces_sample_rate= 1.0,
-)
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-sadksakdoplsa;321321fdfds///////////dpsa;p******'
 
-DEBUG = os.getenv('ENVIRONMENT', 'development')
+DEBUG = os.getenv('DEBUG', 'True') == 'True'
+
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS').split(', ')
 
@@ -255,21 +248,9 @@ STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', 'nullkey')
 STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET', 'nullkey')
 
 # GPO and Security
-ENVIRONMENT = os.getenv('ENVIRONMENT', 'development')
-if ENVIRONMENT == 'production':
+if not DEBUG:
     print('############### PROD ###############')
 
-    # see https://docs.sentry.io/platforms/python/data-management/data-collected/   
-    sentry_sdk.init(
-        dsn=os.getenv('DJANGO_APP_SENTRY_DSN'),
-        send_default_pii=True,
-        environment=os.getenv('ENVIRONMENT'),
-        release=str(os.getenv('DJANGO_APP_NAME', 'Growup - REST API PROD')) + ' - ' + str(os.getenv('DJANGO_APP_VERSION', 'v1.0')),
-        traces_sample_rate= 0.2,
-    )
-
-    SECRET_KEY = str(os.getenv('SECRET_KEY'))
-    DEBUG = False
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_BROWSER_XSS_FILTER = True

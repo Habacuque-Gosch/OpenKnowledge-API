@@ -3,8 +3,8 @@ from .models import CustomUser, UserProfile, UserPreference
 from django.contrib.auth.admin import UserAdmin
 
 
-admin.sites.AdminSite.site_header = 'GuiarMe'
-admin.sites.AdminSite.index_title = 'GuiarMe'
+admin.sites.AdminSite.site_header = 'OpenKnowledge'
+admin.sites.AdminSite.index_title = 'OpenKnowledge'
 admin.sites.AdminSite.site_title = 'Admin Site'
 
 
